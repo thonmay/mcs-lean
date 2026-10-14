@@ -165,8 +165,9 @@ status:
     neighbour counts differ by at most one along every proper common MCS prefix
     implies a common MCS ordering -- strictly more general than the every-subset
     exists_common_ordering, which is retained as a special case), its
-    constructive online form common_order_extends_prefix (any
-    common MCS prefix extends to a full common ordering, so a maintainer that
+    constructive online form common_order_extends_prefix (under the same
+    prefix-only bounds, any common MCS prefix extends to a full common
+    ordering, so a maintainer that
     picks a common-maximum vertex at each step never backtracks), with
     corollaries insert_matching_common_order,
     delete_matching_common_order and flip_common_order; and the obstructions are
@@ -461,7 +462,7 @@ alignment:
       lean: "Challenge.common_order_extends_prefix"
       module: "Solution"
       status: "proved"
-      note: "Constructive online form of the common-ordering theorem: a maintainer picking a common-maximum vertex at each step extends its prefix to a full common ordering with no lookahead or backtracking."
+      note: "Constructive online form of exists_common_ordering_prefix, under the same hypothesis (bounds required only along proper common MCS prefixes): a maintainer picking a common-maximum vertex at each step extends its prefix to a full common ordering with no lookahead or backtracking."
     - source: "Stability: inserting a matching leaves a common MCS ordering."
       lean: "Challenge.insert_matching_common_order"
       module: "Solution"

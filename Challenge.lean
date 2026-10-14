@@ -687,8 +687,12 @@ theorem exists_common_ordering_prefix : ∀ {n : ℕ} (G G' : UGraph n),
 
 /-- Online stability: any common MCS prefix extends to a full common MCS ordering of both graphs; a maintainer picking a common-maximum vertex at each step never needs to backtrack. -/
 theorem common_order_extends_prefix : ∀ {n : ℕ} (G G' : UGraph n),
-      (∀ (S : Finset (Vert n)) (x : Vert n), G.neigh S x ≤ G'.neigh S x) →
-        (∀ (S : Finset (Vert n)) (x : Vert n), G'.neigh S x ≤ G.neigh S x + 1) →
+      (∀ (P : List (Vert n)),
+          IsCommonPrefix G G' P → P.length < n →
+            ∀ (x : Vert n), G.neigh P.toFinset x ≤ G'.neigh P.toFinset x) →
+        (∀ (P : List (Vert n)),
+            IsCommonPrefix G G' P → P.length < n →
+              ∀ (x : Vert n), G'.neigh P.toFinset x ≤ G.neigh P.toFinset x + 1) →
           ∀ (P : List (Vert n)), P.Nodup →
             (∀ (i : ℕ) (hi : i < P.length),
               G.IsMCSNextAny (P.take i).toFinset (P.get ⟨i, hi⟩) ∧

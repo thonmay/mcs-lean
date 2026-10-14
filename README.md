@@ -72,9 +72,9 @@ The formalization proves, for every graph size `n`:
   every-subset version `exists_common_ordering` is retained as a special case).
   In particular, inserting or deleting a
   *matching*, or flipping a single edge, always preserves a common MCS
-  ordering. The connection to the algorithm is the **online** form: any common
-  MCS prefix extends to a full common ordering
-  (`common_order_extends_prefix`) — a maintainer that picks a common-maximum
+  ordering. The connection to the algorithm is the **online** form: under the
+  same prefix-only hypothesis, any common MCS prefix extends to a full common
+  ordering (`common_order_extends_prefix`) — a maintainer that picks a common-maximum
   vertex at each step never needs to look ahead or backtrack. Neither part of
   the hypothesis can simply be dropped: inserting a triangle (`n = 5`), a
   `P_4` (`n = 6`), or a `2P_3` (`n = 8`) shows the `+1` bound cannot be relaxed

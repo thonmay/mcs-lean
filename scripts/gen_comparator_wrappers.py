@@ -109,8 +109,12 @@ THEOREMS = [
               ∀ (x : Vert n), G'.neigh P.toFinset x ≤ G.neigh P.toFinset x + 1) →
           ∃ ord, G.IsMCSOrderingAny ord ∧ G'.IsMCSOrderingAny ord"""),
     ("common_order_extends_prefix", """∀ {n : ℕ} (G G' : UGraph n),
-      (∀ (S : Finset (Vert n)) (x : Vert n), G.neigh S x ≤ G'.neigh S x) →
-        (∀ (S : Finset (Vert n)) (x : Vert n), G'.neigh S x ≤ G.neigh S x + 1) →
+      (∀ (P : List (Vert n)),
+          IsCommonPrefix G G' P → P.length < n →
+            ∀ (x : Vert n), G.neigh P.toFinset x ≤ G'.neigh P.toFinset x) →
+        (∀ (P : List (Vert n)),
+            IsCommonPrefix G G' P → P.length < n →
+              ∀ (x : Vert n), G'.neigh P.toFinset x ≤ G.neigh P.toFinset x + 1) →
           ∀ (P : List (Vert n)), P.Nodup →
             (∀ (i : ℕ) (hi : i < P.length),
               G.IsMCSNextAny (P.take i).toFinset (P.get ⟨i, hi⟩) ∧

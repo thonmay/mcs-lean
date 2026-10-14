@@ -141,13 +141,17 @@ theorem exists_common_ordering (G G' : UGraph n)
 
 /-- Online form of the common-ordering theorem: any common MCS prefix — a
 duplicate-free list `P` whose every step is a legal MCS step in *both* graphs —
-extends to a full common MCS ordering of both graphs.  This is the constructive
-content of `exists_common_ordering`: a maintainer that, at each step, picks any
-vertex that is maximum in both graphs can extend its prefix forever, with no
-lookahead and no backtracking. -/
+extends to a full common MCS ordering of both graphs.  The count bounds are
+required only along proper common prefixes, exactly as in
+`exists_common_ordering_prefix`.  This is the constructive content of that
+theorem: a maintainer that, at each step, picks any vertex that is maximum in
+both graphs can extend its prefix forever, with no lookahead and no
+backtracking. -/
 theorem common_order_extends_prefix (G G' : UGraph n)
-    (hlo : ∀ (S : Finset (Vert n)) (x : Vert n), G.neigh S x ≤ G'.neigh S x)
-    (hhi : ∀ (S : Finset (Vert n)) (x : Vert n), G'.neigh S x ≤ G.neigh S x + 1)
+    (hlo : ∀ P, IsCommonPrefix G G' P → P.length < n →
+             ∀ x, G.neigh P.toFinset x ≤ G'.neigh P.toFinset x)
+    (hhi : ∀ P, IsCommonPrefix G G' P → P.length < n →
+             ∀ x, G'.neigh P.toFinset x ≤ G.neigh P.toFinset x + 1)
     (P : List (Vert n)) (hnd : P.Nodup)
     (hsteps : ∀ i (hi : i < P.length),
       IsMCSNextAny G (P.take i).toFinset (P.get ⟨i, hi⟩) ∧
@@ -177,8 +181,8 @@ theorem common_order_extends_prefix (G G' : UGraph n)
         rw [List.toFinset_card_of_nodup hnd] at hc
         omega
       obtain ⟨w, hwG, hwG'⟩ :=
-        exists_common_pick G G' P.toFinset (fun x => hlo P.toFinset x)
-          (fun x => hhi P.toFinset x) hne
+        exists_common_pick G G' P.toFinset (hlo P ⟨hnd, hsteps⟩ hlt)
+          (hhi P ⟨hnd, hsteps⟩ hlt) hne
       have hwP : w ∉ P :=
         fun hmem => (Finset.mem_sdiff.1 hwG.1).2 (List.mem_toFinset.2 hmem)
       have hnd' : (P ++ [w]).Nodup := by
