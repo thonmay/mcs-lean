@@ -5,12 +5,12 @@ This file records the P0 literature gate from the supervisor roadmap
 the provenance notes in `formalization.yaml` and for the related-work framing
 of the eventual arXiv preprint (P4). Every claim below is tagged:
 
-- **VERIFIED** — citation checked against the publisher record (DOI resolves,
-  venue/year/pages confirmed).
-- **NOT FOUND** — searched the listed sources and found no prior statement of
-  the specific result. This is an absence of evidence, not proof of absence;
-  the wording in `formalization.yaml` reflects that ("we are not aware", never
-  "no such result exists").
+- **VERIFIED**: citation checked against the publisher record (DOI resolves,
+  venue, year and pages confirmed).
+- **NOT FOUND**: the listed sources were searched and contain no prior
+  statement of the specific result. That is an absence of evidence, not proof
+  of absence, and the wording in `formalization.yaml` says so ("we are not
+  aware", never "no such result exists").
 
 ## 1. Foundations (VERIFIED)
 
@@ -43,7 +43,7 @@ the clique is `1..5`, `u=6`, `v=7`):
 - MCS-only: `2,3,1,4,5,7,6` (and 39 others).
 
 (A previous revision named `1,2,3,4,5,6,7` / `1,2,3,4,5,7,6`; that pair is
-wrong — the first lies in neither family and the second in both. The aggregate
+wrong: the first lies in neither family and the second in both. The aggregate
 204/204/40 count was and remains correct.)
 
 This is consistent with Corneil-Krueger (2008): MCS and LexBFS are both
@@ -81,22 +81,23 @@ past the window may also change.
   was located. `formalization.yaml` says "we are not aware of a prior
   formalization", which is accurate.
 
-There is no "Agrawal et al. CSR 2018" — an earlier draft mis-cited the CSR 2018
-paper; the correct authors are Banerjee, Raman, Satti.
+There is no "Agrawal et al. CSR 2018". An earlier draft mis-cited the CSR 2018
+paper; the correct authors are Banerjee, Raman and Satti.
 
 ## 3. Stability-boundary result (NOT FOUND)
 
-The novelty lever for the Palomar submission: the common-ordering theorem
-(if, along every chosen set, each vertex's neighbour count in `G'` is at least
-its count in `G` and at most one more, then `G` and `G'` share an MCS ordering
-under arbitrary tie-breaking) plus the matching / single-flip corollaries and
-certified counterexamples delimiting the stability boundary.
+This is the novelty lever for the Palomar submission. The common-ordering
+theorem says: if, along every proper common MCS prefix, each vertex's neighbour
+count in `G'` is at least its count in `G` and at most one more, then `G` and
+`G'` share an MCS ordering under arbitrary tie-breaking. It comes with the
+matching and single-flip corollaries and with certified counterexamples that
+delimit the stability boundary.
 
 - **Nearest published work:** Brandstädt, Dragan, Nicolai, *LexBFS-orderings
   and powers of chordal graphs,* Discrete Math. 171(1-3):27-42, 1997,
   doi:10.1016/S0012-365X(96)00070-2. That result is about LexBFS common PEOs
-  of graph powers and is **negative for MCS** — the paper states that even for
-  trees MCS does not give a common PEO of powers — so it does not subsume our
+  of graph powers and is **negative for MCS**: the paper states that even for
+  trees MCS does not give a common PEO of powers. It does not subsume our
   positive stability statement.
 - Searched the VibeMathed catalog (741 entries via `vibemathed.com/api/dataset`)
   for matching-stability / star-plus-matching / common MCS ordering: **NOT
@@ -107,7 +108,7 @@ certified counterexamples delimiting the stability boundary.
   carries the submission's novelty, per the supervisor roadmap. No asymptotic
   separation is claimed: in the unit-cost model the worst-case update costs at
   most `n` (insertion) or `n + 1` (deletion) units, the same order as a full
-  recomputation; the executable itself is a naive adjacency-list
+  recomputation. The executable itself is a naive boolean adjacency-matrix
   implementation, not a linear-time one.
 
 ## 4. Consequences for the submission

@@ -30,21 +30,22 @@ a review endorsement.
 ## What is MCS?
 
 Maximum Cardinality Search is a graph traversal introduced by Tarjan and
-Yannakakis (1984). It numbers vertices from 1 to *n* by repeatedly selecting
-the unnumbered vertex with the most already-numbered neighbours. This
-formalization breaks ties by lowest index (the *canonical* ordering) for the
-update results, and allows any legal tie-break for the stability results. On a
-chordal graph, the reverse of any MCS ordering is a perfect elimination
-ordering, which gives a linear-time chordality test. MCS is a simpler variant
-of the lexicographic breadth-first search (LexBFS) of Rose, Tarjan and Lueker
-(1976), with the same `O(n + m)` running time. The two searches produce
-incomparable families of orderings: neither contains the other, on general
-graphs (e.g. `K₂,₃`) and even on chordal graphs (e.g. a 5-clique plus a vertex
-joined to one clique vertex and another joined to two).
+Yannakakis (1984). It numbers the vertices 1 to *n*, each time picking an
+unnumbered vertex with the most already-numbered neighbours. For the update
+results we break ties by lowest index, which gives the *canonical* ordering; the
+stability results allow any legal tie-break.
 
-The question studied here is *how rigid* an MCS ordering is: when do two graphs
-share an MCS ordering, and how much of a given ordering must change after a
-single edge is inserted or deleted?
+On a chordal graph, the reverse of any MCS ordering is a perfect elimination
+ordering, which gives a linear-time chordality test. MCS simplifies the
+lexicographic breadth-first search (LexBFS) of Rose, Tarjan and Lueker (1976)
+and runs in the same `O(n + m)` time. Neither search's family of orderings
+contains the other's, on general graphs (e.g. `K₂,₃`) and even on chordal graphs
+(e.g. a 5-clique plus one vertex joined to a single clique vertex and another
+joined to two).
+
+The question here is *how rigid* an MCS ordering is. When do two graphs share
+one, and how much of a given ordering must change when a single edge is
+inserted or deleted?
 
 ## Results
 
@@ -64,15 +65,14 @@ probe bound marked *paper-level*.
   look ahead or backtrack.
 - **Certified obstructions.** Neither part of the hypothesis can simply be
   dropped. Inserting a triangle (`n = 5`), a `P_4` (`n = 6`) or a `2P_3`
-  (`n = 8`) shows the `+1` bound cannot be relaxed to `+2`, and a *disjoint*
-  mixed update (one insertion and one deletion, `n = 4`) shows the
-  one-directional (insert-only or delete-only) condition is needed. Each
-  destroys every common ordering, certified by kernel `decide` on explicit
-  instances. The triangle and the `P_4` show the same inflation phenomenon on
-  structurally different insertions: the triangle is a clique, while the `P_4`
-  is triangle-free. The hypothesis is sufficient, not necessary: inserting a
-  2-edge path inflates one vertex by two yet leaves a common ordering on every
-  host graph (exhaustively checked up to `n = 6` with
+  (`n = 8`) shows the `+1` bound cannot be relaxed to `+2`. A *disjoint* mixed
+  update (one insertion and one deletion, `n = 4`) shows the one-directional
+  (insert-only or delete-only) condition is needed. Each instance destroys every
+  common ordering, certified by kernel `decide`. The triangle and the `P_4` show
+  the same inflation on structurally different insertions: one is a clique, the
+  other is triangle-free. The hypothesis is sufficient but not necessary.
+  Inserting a 2-edge path inflates one vertex by two, yet a common ordering
+  survives on every host graph (checked exhaustively up to `n = 6` with
   `scripts/mcs_stability.py`).
 - **Correctness.** The probe-then-repair update scans for the first step whose
   old choice is no longer a legal MCS pick and re-greedily rebuilds the suffix
@@ -91,19 +91,19 @@ probe bound marked *paper-level*.
   (`execInsertUpdate` / `execDeleteUpdate`) is proved to refine the abstract
   update.
 - **Unit cost.** Instrumented versions count legality checks and pick steps
-  along the real control flow; their first projection is provably the plain
+  along the real control flow, and their first projection is provably the plain
   update. A deletion whose probe finds no break costs **exactly 1** unit
   (`exec_delete_cost_of_no_break`). An insertion whose probe finds no break
-  costs at most `laterPos - earlierPos` units (`exec_insert_cost_of_no_break`);
-  this count includes the later endpoint's position, which the executable probe
-  checks even though it never breaks. The worst case is at most `n` units for an
-  insertion and `n + 1` for a deletion, which **matches static recomputation**:
-  no asymptotic speedup over recomputing from scratch is claimed. One unit is a
-  single legality check or pick step, and each unit is itself superconstant
-  work in this naive implementation (`pickAt` filters the chosen list per
-  candidate), so the model compares the update with recomputation *within the
-  same model* and says nothing about wall-clock parity with the linear-time
-  static algorithm of Tarjan and Yannakakis.
+  costs at most `laterPos - earlierPos` units (`exec_insert_cost_of_no_break`).
+  That count includes the later endpoint's position: the executable probe checks
+  it, even though it never breaks. In the worst case an insertion costs at most
+  `n` units and a deletion `n + 1`, which **matches static recomputation**, so
+  no asymptotic speedup is claimed. A unit is one legality check or pick step,
+  and in this naive implementation each unit is itself superconstant work
+  (`pickAt` filters the chosen list for every candidate). The model therefore
+  compares the update with recomputation *within the same model*. It says
+  nothing about wall-clock parity with the linear-time static algorithm of
+  Tarjan and Yannakakis.
 - **Sublinear first-break probe (paper-level).** The insertion probe is
   answerable in `O((deg(v)+1) log n)` time, independent of the window length,
   via per-value position lists and range-max structures. This bound is proved
