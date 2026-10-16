@@ -1,7 +1,7 @@
 module
 
 public import Mathlib
-public import ThesisLean.Exec
+public import McsLean.Exec
 
 set_option backward.proofsInPublic true
 @[expose] public section

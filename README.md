@@ -12,7 +12,7 @@ along its real control flow.
 **Accompanying preprint:** *How rigid is maximum cardinality search? Stability
 and locality of MCS orderings under edge updates, verified in Lean* (in
 preparation). The preprint pins this repository to the annotated tag
-[`mcs-arxiv-v4`](https://github.com/thonmay/thesis-lean/releases/tag/mcs-arxiv-v4)
+[`mcs-arxiv-v4`](https://github.com/thonmay/mcs-lean/releases/tag/mcs-arxiv-v4)
 (commit `c4c2c0f`).
 
 **Registered formalization:** Palomar Registry entry
@@ -144,7 +144,7 @@ recomputation rather than the update; they are kept for the executable bridge.
 Challenge.lean            Posed statements (sorry bodies) + canonical definitions
 Solution.lean             Proved versions of every comparator theorem
 AxiomAudit.lean           #print axioms for each comparator theorem
-ThesisLean/
+McsLean/
   Basic.lean              Module header and shared imports
   ChallengeDefs.lean      Canonical definitions (byte-identical to Challenge.lean DEFS block)
   Correctness.lean        Uniqueness, locality, update = recompute

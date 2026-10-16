@@ -11,7 +11,7 @@ set_option backward.proofsInPublic true
 Statements (with `sorry` bodies) of the headline results; `Solution.lean`
 proves each one under the same name and type.
 
-The definitions block below is byte-identical to `ThesisLean/ChallengeDefs.lean`
+The definitions block below is byte-identical to `McsLean/ChallengeDefs.lean`
 (checked by `scripts/check_challenge_defs.sh`), which `Solution.lean` imports.
 -/
 

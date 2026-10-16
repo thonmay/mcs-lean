@@ -1,15 +1,15 @@
 module
 
 public import Mathlib
-public import ThesisLean.Formal_gen001c01_3939115c
-public import ThesisLean.Formal_gen003c01_eea71821
-public import ThesisLean.Exec
-public import ThesisLean.ExecFlip
-public import ThesisLean.BridgeAssembly
-public import ThesisLean.SolutionBridge
-public import ThesisLean.Correctness
-public import ThesisLean.ExecUpdate
-public import ThesisLean.Stability
+public import McsLean.Formal_gen001c01_3939115c
+public import McsLean.Formal_gen003c01_eea71821
+public import McsLean.Exec
+public import McsLean.ExecFlip
+public import McsLean.BridgeAssembly
+public import McsLean.SolutionBridge
+public import McsLean.Correctness
+public import McsLean.ExecUpdate
+public import McsLean.Stability
 
 set_option backward.proofsInPublic true
 @[expose] public section
@@ -19,7 +19,7 @@ set_option backward.proofsInPublic true
 
 This module supplies real proofs (no `sorry`) of the headline theorems that
 `Challenge.lean` states with `sorry`-bodies under the same namespace
-`Challenge`.  It imports `ThesisLean.ChallengeDefs` (the definitions block of
+`Challenge`.  It imports `McsLean.ChallengeDefs` (the definitions block of
 `Challenge.lean`, byte-identical) and the project development, but not
 `Challenge.lean` itself.
 

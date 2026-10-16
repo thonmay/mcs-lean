@@ -1,15 +1,15 @@
 module
 
 public import Mathlib
-public import ThesisLean.Exec
-public import ThesisLean.ExecBridge
-public import ThesisLean.BridgeSteps
-public import ThesisLean.CardBridge
-public import ThesisLean.McsInvariant
-public import ThesisLean.BridgePartsA
-public import ThesisLean.BridgePartsB
-public import ThesisLean.BridgePartsC
-public import ThesisLean.Formal_gen001c01_3939115c
+public import McsLean.Exec
+public import McsLean.ExecBridge
+public import McsLean.BridgeSteps
+public import McsLean.CardBridge
+public import McsLean.McsInvariant
+public import McsLean.BridgePartsA
+public import McsLean.BridgePartsB
+public import McsLean.BridgePartsC
+public import McsLean.Formal_gen001c01_3939115c
 
 set_option backward.proofsInPublic true
 @[expose] public section

@@ -1,8 +1,8 @@
 module
 
 public import Mathlib
-public import ThesisLean.Exec
-public import ThesisLean.Formal_gen001c01_3939115c
+public import McsLean.Exec
+public import McsLean.Formal_gen001c01_3939115c
 
 set_option backward.proofsInPublic true
 @[expose] public section
@@ -13,7 +13,7 @@ set_option backward.proofsInPublic true
 Defines the `better` selection relation used inside `Exec.bestPick` and proves
 it is definitionally the `bestPick` foldl lambda. The executable/abstract
 equivalence `mcsOrder_eq_greedySuffix` (the bridge this file originally planned)
-is now proved in `ThesisLean/BridgeAssembly.lean`, assembled from
+is now proved in `McsLean/BridgeAssembly.lean`, assembled from
 `CardBridge.lean` and `BridgeParts{A,B,C}.lean`; the helper lemmas below the
 `PLANNED` block were completed there. This file is `sorry`/`axiom`-free.
 -/

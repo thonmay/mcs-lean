@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Copy the BEGIN DEFS/END DEFS block of ThesisLean/ChallengeDefs.lean into Challenge.lean."""
+"""Copy the BEGIN DEFS/END DEFS block of McsLean/ChallengeDefs.lean into Challenge.lean."""
 import pathlib
 import sys
 
@@ -16,7 +16,7 @@ def block(text: str, path: pathlib.Path) -> tuple[int, int]:
     return start, stop
 
 
-defs_path = ROOT / "ThesisLean" / "ChallengeDefs.lean"
+defs_path = ROOT / "McsLean" / "ChallengeDefs.lean"
 challenge_path = ROOT / "Challenge.lean"
 defs = defs_path.read_text()
 challenge = challenge_path.read_text()

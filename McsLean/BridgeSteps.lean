@@ -1,8 +1,8 @@
 module
 
 public import Mathlib
-public import ThesisLean.Exec
-public import ThesisLean.ExecBridge
+public import McsLean.Exec
+public import McsLean.ExecBridge
 
 set_option backward.proofsInPublic true
 @[expose] public section

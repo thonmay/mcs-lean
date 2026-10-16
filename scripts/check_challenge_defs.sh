@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 # Fail unless the definitions block of Challenge.lean is byte-identical to the
-# one in ThesisLean/ChallengeDefs.lean (the module Solution.lean imports).
+# one in McsLean/ChallengeDefs.lean (the module Solution.lean imports).
 set -euo pipefail
 
 root="$(cd "$(dirname "$0")/.." && pwd)"
 challenge="$root/Challenge.lean"
-defs="$root/ThesisLean/ChallengeDefs.lean"
+defs="$root/McsLean/ChallengeDefs.lean"
 
 extract() {
   awk '/^-- BEGIN DEFS$/{on=1} on{print} /^-- END DEFS$/{on=0}' "$1"
@@ -19,7 +19,7 @@ for f in "$challenge" "$defs"; do
 done
 
 if ! diff <(extract "$challenge") <(extract "$defs"); then
-  echo "error: Challenge.lean definitions differ from ThesisLean/ChallengeDefs.lean" >&2
+  echo "error: Challenge.lean definitions differ from McsLean/ChallengeDefs.lean" >&2
   exit 1
 fi
-echo "Challenge.lean definitions match ThesisLean/ChallengeDefs.lean"
+echo "Challenge.lean definitions match McsLean/ChallengeDefs.lean"

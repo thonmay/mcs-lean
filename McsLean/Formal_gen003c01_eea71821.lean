@@ -1,7 +1,7 @@
 module
 
 public import Mathlib
-public import ThesisLean.Formal_gen001c01_3939115c
+public import McsLean.Formal_gen001c01_3939115c
 
 set_option backward.proofsInPublic true
 @[expose] public section
@@ -37,7 +37,7 @@ first breaking step (bucket MCS / Rose-Tarjan).  Often the probe finds no
 break and no regreedy is needed.
 
 Formalization.  We reuse the graph/invariant framework of
-`ThesisLean.Formal_gen001c01_3939115c` (`UGraph`, `Vert`, `IsMCSNext`,
+`McsLean.Formal_gen001c01_3939115c` (`UGraph`, `Vert`, `IsMCSNext`,
 `IsMCSOrdering`, `FlipOf`, `greedySuffix`, `greedySuffix_valid`,
 `mem_of_IsMCSOrdering`).  The candidate's regreedy of the suffix from step
 `k` keeping the prefix `order.take k` is modeled exactly as

@@ -1,7 +1,7 @@
-name = "thesis-lean"
+name = "mcs-lean"
 version = "0.1.0"
 keywords = ["math"]
-defaultTargets = ["ThesisLean", "Challenge", "Solution"]
+defaultTargets = ["McsLean", "Challenge", "Solution"]
 
 [leanOptions]
 pp.unicode.fun = true # pretty-prints `fun a ↦ b`
@@ -15,7 +15,7 @@ scope = "leanprover-community"
 rev = "58d6e790080f66348d86c115a1e00ab9b6343f70"
 
 [[lean_lib]]
-name = "ThesisLean"
+name = "McsLean"
 
 [[lean_lib]]
 name = "Challenge"

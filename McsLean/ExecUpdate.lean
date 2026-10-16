@@ -1,8 +1,8 @@
 module
 
 public import Mathlib
-public import ThesisLean.Correctness
-public import ThesisLean.McsInvariant
+public import McsLean.Correctness
+public import McsLean.McsInvariant
 
 set_option backward.proofsInPublic true
 @[expose] public section

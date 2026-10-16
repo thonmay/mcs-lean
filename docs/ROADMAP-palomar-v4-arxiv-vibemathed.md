@@ -8,12 +8,12 @@ created: 2026-09-23T17:05:43Z
 Fix every item of the 2026-09-23 Palomar automated review by changing the Lean rather than the prose, add a machine-checked stability-boundary result as the research-interest upgrade, resubmit to Palomar as a new submission, then publish on arXiv and VibeMathed and announce it.
 
 ## 0. Inputs and settled decisions
-- Palomar review: `thesis-lean/palomer-automated-review.txt` (codex:gpt-5.6-sol, 2026-09-23; stays untracked because it is private). Supervisor review: `~/Downloads/Verdict.md`.
+- Palomar review: `mcs-lean/palomer-automated-review.txt` (codex:gpt-5.6-sol, 2026-09-23; stays untracked because it is private). Supervisor review: `~/Downloads/Verdict.md`.
 - Resubmission: https://submit.palomar-registry.org/, as a **new submission with the Palomar ID blank** (this is v4).
 - Scope: Lean repairs + locality headlines + operational cost + **stability boundary**.
 - Cost model: **unit-cost query model** (count legality checks and pick steps along the real executable control flow).
 - Authorship: **you + supervisor** (co-authors). The supervisor is **not** an independent reviewer (too involved in the research); the review status is author-verified and no independent third-party review has occurred.
-- No prior stability work or harness exists in `thesis-lean` or `ai-dynamic-graph-algorithms`. It is built here.
+- No prior stability work or harness exists in `mcs-lean` or `ai-dynamic-graph-algorithms`. It is built here.
 - Rule for every reviewer either/or: **fix the Lean; never resolve an item by disclosure alone.**
 - **Supervisor sign-off (2026-09-23):** P0, P1 and P2 approved as planned.
   - **P3 Palomar is low-stakes:** no supervisor gate. Update the current submission after our own validation. Palomar's mechanics require the corrected commit to go in as a new submission with the ID blank.
@@ -25,24 +25,24 @@ Fix every item of the 2026-09-23 Palomar automated review by changing the Lean r
 ### 1a. Verdict.md's Lean criticisms: all confirmed
 | Defect | Location |
 |---|---|
-| Complexity proofs are `omega` over size bounds | the pre-v4 cost module `ComplexityHeadlines.lean` (since deleted; replaced by the operational unit-cost model in `ThesisLean/ExecUpdate.lean`) |
-| `exec_insert_valid`/`exec_delete_valid` certify recomputation; no executable dynamic update | `Challenge.lean:484-512`, `ThesisLean/ExecFlip.lean:315-365` |
+| Complexity proofs are `omega` over size bounds | the pre-v4 cost module `ComplexityHeadlines.lean` (since deleted; replaced by the operational unit-cost model in `McsLean/ExecUpdate.lean`) |
+| `exec_insert_valid`/`exec_delete_valid` certify recomputation; no executable dynamic update | `Challenge.lean:484-512`, `McsLean/ExecFlip.lean:315-365` |
 | `greedyPick` = `Classical.choose`, though `exists_IsMCSNext` builds the witness | `Challenge.lean:86-135` |
 | `deleteCost` charges a suffix scan; `deleteUpdate` does one check | `Challenge.lean:309-314` vs `243-247` |
 | Lowest-index clause ⇒ the MCS order is unique | `IsMCSNext`, third conjunct |
 | `AxiomAudit.lean` audits `DynamicMCS.*`, not the comparator's `Challenge.*` | `AxiomAudit.lean:16-21` |
 | README is the GitHub template | `README.md` |
 
-### 1b. Locality is mostly proved already (`ThesisLean/Formal_gen003c01_eea71821.lean`)
+### 1b. Locality is mostly proved already (`McsLean/Formal_gen003c01_eea71821.lean`)
 `legal_after_laterPos` (l.825), `legal_middle_delete` (l.926), `insert_break_iff` (l.1096), `deletionBreaks_true_iff` (l.1235). Missing as named lemmas: `insert_legal_before_window` (steps ≤ earlierPos) and the two null-update equalities.
 
 ### 1c. Code architecture every change must respect
 - **Two parallel namespaces:**
   - `DynamicMCS` holds the real development: `Formal_gen001c01_3939115c.lean` (UGraph, IsMCSNext, greedyPick, mcsLoop) and `Formal_gen003c01_eea71821.lean` (updates, validity).
-  - `Challenge` is restated verbatim in `Challenge.lean` and again in `ThesisLean/SolutionBridge.lean`. It connects to the real development by `toDyn` transport lemmas (`greedyPick_val`, `mcsLoop_eq`, `firstBreak_eq`, `insertCost_eq`, …, `SolutionBridge.lean:351-679`).
+  - `Challenge` is restated verbatim in `Challenge.lean` and again in `McsLean/SolutionBridge.lean`. It connects to the real development by `toDyn` transport lemmas (`greedyPick_val`, `mcsLoop_eq`, `firstBreak_eq`, `insertCost_eq`, …, `SolutionBridge.lean:351-679`).
   - ⇒ Every definition change goes into **three places in lockstep**: DynamicMCS, `Challenge.lean`, and `SolutionBridge.lean`, plus its transport lemma.
 - **Exec layer:**
-  - `ThesisLean/Exec.lean` (bestPick/mcsStep/mcsOrder)
+  - `McsLean/Exec.lean` (bestPick/mcsStep/mcsOrder)
   - `McsInvariant.lean`: the invariant `McListInv` is proved only from the initial state `([], List.range n)`; `bestPick_IsMCSNext` at l.230
   - `CardBridge.lean`, `BridgeParts{A,B,C}.lean`, `BridgeAssembly.lean`: `mcsOrder_eq_greedySuffix`
   - `ExecFlip.lean`: `setEdge_*` and the `exec_*` theorems
@@ -76,9 +76,9 @@ The verdict's G={01,02}, F={03,13} is not a counterexample (`0,2,1,3,4` is valid
 - The star centre can inflate by more than 1, so the star case needs a non-local argument. That is open research.
 
 ### 1e. Build environment
-- `thesis-lean` pins `leanprover/lean4:v4.35.0-rc2` (the Palomar minimum). Installed toolchains: 4.33 and 4.34.
-- `thesis-brainstormig/.lake` has mathlib for 4.34; `thesis-lean/.lake` does not exist.
-- Setup (about 5 GB, runs after approval): `elan toolchain install leanprover/lean4:v4.35.0-rc2`, then `lake exe cache get && lake build` in `thesis-lean`.
+- `mcs-lean` pins `leanprover/lean4:v4.35.0-rc2` (the Palomar minimum). Installed toolchains: 4.33 and 4.34.
+- A scratch project's `.lake` has mathlib for 4.34; `mcs-lean/.lake` does not exist.
+- Setup (about 5 GB, runs after approval): `elan toolchain install leanprover/lean4:v4.35.0-rc2`, then `lake exe cache get && lake build` in `mcs-lean`.
 - The remote 96-core host plus the CI leanchecker are the final gate.
 
 ## 2. Palomar review item → fix
@@ -108,13 +108,13 @@ The verdict's G={01,02}, F={03,13} is not a counterexample (`0,2,1,3,4` is valid
   - (b) whether a **pre-existing open question** exists that locality or stability answers (the VibeMathed route)
   - (c) whether the star–matching phenomenon is known
 
-### P1: Lean repair (`thesis-lean/`)
-1. **Environment + baseline.** Install 4.35.0-rc2, fetch the cache, `lake build` the current HEAD, fix any API drift. Point lean-lsp at `thesis-lean`.
+### P1: Lean repair (`mcs-lean/`)
+1. **Environment + baseline.** Install 4.35.0-rc2, fetch the cache, `lake build` the current HEAD, fix any API drift. Point lean-lsp at `mcs-lean`.
 2. **Explicit `greedyPick`** in DynamicMCS, Challenge and SolutionBridge. Body: `(U.filter (neigh = U.sup neigh)).min' _` with `greedyPick_isMCSNext`.
    - Classical decidability of `adj` is kept. A full `DecidableRel` refactor clashes with `open Classical` everywhere and adds nothing once P1.6 gives a verified executable.
    - Acceptance: no `Classical.choose` in any update definition; `greedyPick_val` transport re-proved.
 3. **Tie-break split.** Add `IsMCSNextAny` / `IsMCSOrderingAny` (no index clause), with lemmas `IsMCSNext.toAny` and `IsMCSOrdering.toAny`.
-4. **Locality module** `ThesisLean/Locality.lean`:
+4. **Locality module** `McsLean/Locality.lean`:
    - `insert_legal_before_window` (new)
    - re-export `legal_after_laterPos`, `legal_middle_delete`, `insert_break_iff`, `delete_break_iff`
    - `insert_null_update`: `firstBreakWindow … = none → insertUpdate G' order u v = order`
@@ -122,14 +122,14 @@ The verdict's G={01,02}, F={03,13} is not a counterexample (`0,2,1,3,4` is valid
 5. **Window-bounded probe.** Redefine `firstBreakWindow H order k0 k1 := firstBreakAux H order k0 ((order.drop k0).take (k1 + 1 - k0))`.
    - Prove `firstBreakWindow_eq_filtered` (equals the old full-scan-then-filter) using `legal_after_laterPos`.
    - Re-prove `insert_update_valid`.
-6. **Executable dynamic updates** `ThesisLean/ExecUpdate.lean`:
+6. **Executable dynamic updates** `McsLean/ExecUpdate.lean`:
    - `execLegal a chosen w : Bool` (via `cardC`), with `execLegal_iff : execLegal … = true ↔ IsMCSNext (toUGraph a …) …`
    - `execFirstBreakWindow`, `execRegreedyFrom a pref`, `execInsertUpdate`, `execDeleteUpdate`
    - **Generalize `McListInv`/`foldl_mcsStep` from `([], range n)` to an arbitrary valid prefix state `(pref.reverse, range n \ pref)`.** This is the main new bridge proof.
    - Refinement: `exec_insert_update_refines` / `exec_delete_update_refines`: the output = `(insertUpdate G' ord u v).map val` for `ord` with `ord.map val = order`.
    - Rename `exec_insert_valid` → `exec_insert_recompute_valid`, `exec_delete_valid` → `exec_delete_recompute_valid`, and add `exec_recompute_valid` (from `mcsOrder_eq_greedySuffix`).
    - Tests: `#eval` agreement against `mcsOrder` of the flipped matrix for all graphs with n ≤ 5; kernel `decide` spot checks at n ≤ 4 (no `native_decide`).
-7. **Operational cost (unit-cost query model)** `ThesisLean/ExecCost.lean`:
+7. **Operational cost (unit-cost query model)** `McsLean/ExecCost.lean`:
    - `execInsertUpdateC` / `execDeleteUpdateC : … → List ℕ × ℕ` count `execLegal` calls and `bestPick` steps; `(·.1)` equals the plain function.
    - Headlines: `insert_probe_checks_le_window` (≤ laterPos − earlierPos), `delete_probe_checks_eq_one`, `insert_null_cost` / `delete_null_cost` (no break ⇒ cost = probe only), `regreedy_picks_eq` (= n − k0), and the corollary `update_cost_le_n`.
    - Delete the surrogate `insertCost`/`deleteCost`/`mSuffix`/`edgeCount` and the "constant 2" note. `mcsOrder_length`/`adj_space_bound` stay internal, not in the comparator.
@@ -140,12 +140,12 @@ The verdict's G={01,02}, F={03,13} is not a counterexample (`0,2,1,3,4` is valid
 9. **Optional, last, only if everything is green:** rename the hash-named modules (`Formal_gen001c01_3939115c` → `Core`, `Formal_gen003c01_eea71821` → `Update`) for readability in the paper.
 
 ### P2: Stability boundary
-1. **Harness** `thesis-lean/scripts/mcs_stability.py`: standard library only, fixed seed, CLI `--n --pattern --mode {ins,del,mixed} --sample`. It regenerates the §1d table into `docs/stability-data.md`.
+1. **Harness** `mcs-lean/scripts/mcs_stability.py`: standard library only, fixed seed, CLI `--n --pattern --mode {ins,del,mixed} --sample`. It regenerates the §1d table into `docs/stability-data.md`.
 2. **Paper proofs** (supervisor checks them before the Lean work):
    - (a) the inflation ≤ 1 theorem (§1d sketch)
    - (b) the K3 / P4 / 2P3 obstructions and the "two high-degree vertices ⇒ contains one of them" lemma
    - (c) the star case: research target, time-boxed
-3. **Lean** `ThesisLean/Stability.lean`, stated on `IsMCSOrderingAny`:
+3. **Lean** `McsLean/Stability.lean`, stated on `IsMCSOrderingAny`:
    - Core: `common_order_of_inflation_le_one`. Hypothesis: `∀ S x, G.neigh S x ≤ G'.neigh S x ∧ G'.neigh S x ≤ G.neigh S x + 1`. Conclusion: `∃ ord, IsMCSOrderingAny G ord ∧ IsMCSOrderingAny G' ord`. Proof by `commonPick_exists` plus the `mcsLoop` pattern.
    - Update model: F as a `UGraph n`, `IsMatching F` (every vertex has ≤ 1 F-neighbour), `insertEdges G F` (sup, with `Disjoint`) and `deleteEdges`.
    - Corollaries: `single_insert_common_order`, `single_delete_common_order`, `insert_matching_common_order`, `delete_matching_common_order`.
@@ -161,8 +161,8 @@ The verdict's G={01,02}, F={03,13} is not a counterexample (`0,2,1,3,4` is valid
 > delivered artifact differs in three ways, recorded here so the doc is not
 > misleading. (i) The comparator has **37** names, not "about 22" (the plan's
 > sub-counts were an early estimate). (ii) The planned module names were
-> superseded: locality lives in `ThesisLean/Correctness.lean` (not
-> `Locality.lean`), and the unit-cost model in `ThesisLean/ExecUpdate.lean` (not
+> superseded: locality lives in `McsLean/Correctness.lean` (not
+> `Locality.lean`), and the unit-cost model in `McsLean/ExecUpdate.lean` (not
 > `ExecCost.lean`). (iii) `docs/stability-data.md` and `docs/audit-log.md` were
 > not created as separate files; the stability data lives in
 > `scripts/mcs_stability.py` and its output is quoted in `docs/LITERATURE.md`.
@@ -211,8 +211,8 @@ The verdict's G={01,02}, F={03,13} is not a counterexample (`0,2,1,3,4` is valid
 - Run it through the auditor skill first.
 - **Gate C (supervisor audit).** Send audit package C (§3a). Submit only after written sign-off.
 
-### P6: Thesis and dissemination
-- Update the ELTE thesis chapter to the new theorem set (tie-break split, locality, stability) so the thesis, Palomar and arXiv agree.
+### P6: Dissemination
+- Update the ELTE write-up to the new theorem set (tie-break split, locality, stability) so the thesis, Palomar and arXiv agree.
 - After P3–P5 are live and audited: LinkedIn/X thread, ResearchGate/Academia mirror of the arXiv PDF, Lean Zulip post. Wording copied from the abstract.
 
 ### 3a. Supervisor audit packages (our own validation first, then send)

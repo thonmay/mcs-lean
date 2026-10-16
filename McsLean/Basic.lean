@@ -6,7 +6,7 @@ set_option backward.proofsInPublic true
 @[expose] public section
 
 /-!
-# ThesisLean
+# McsLean
 
 Lean formalization of the dynamic graph algorithm correctness proofs.
 

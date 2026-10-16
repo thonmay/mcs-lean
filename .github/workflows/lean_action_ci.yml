@@ -27,7 +27,7 @@ jobs:
           large-packages: true
           docker-images: true
           swap-storage: true
-      - name: Challenge definitions match ThesisLean/ChallengeDefs.lean
+      - name: Challenge definitions match McsLean/ChallengeDefs.lean
         run: bash scripts/check_challenge_defs.sh
       - uses: leanprover/lean-action@v1
       - name: Axiom audit of the comparator theorems
@@ -42,12 +42,12 @@ jobs:
           # directory: the CI cache can restore .olean files for modules that
           # have been deleted, which would otherwise be leanchecked (or silently
           # skipped) here. The pathspec lists exactly the submission artifact
-          # (ThesisLean leaves + Challenge + Solution); it deliberately excludes
-          # the root umbrella ThesisLean.lean (a pure import list with no
+          # (McsLean leaves + Challenge + Solution); it deliberately excludes
+          # the root umbrella McsLean.lean (a pure import list with no
           # declarations, redundant to re-check) and AxiomAudit.lean (not a
           # build target). The olean guard is a belt-and-braces skip for any
           # tracked file that is not a build target.
-          for src in $(git ls-files 'ThesisLean/*.lean' Challenge.lean Solution.lean); do
+          for src in $(git ls-files 'McsLean/*.lean' Challenge.lean Solution.lean); do
             olean=".lake/build/lib/lean/${src%.lean}.olean"
             if [ ! -f "$olean" ]; then
               echo "leanchecker: skip $src (no olean, not a build target)"

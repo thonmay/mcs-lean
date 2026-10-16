@@ -1,12 +1,12 @@
 module
 
 public import Mathlib
-public import ThesisLean.ChallengeDefs
-public import ThesisLean.Formal_gen001c01_3939115c
-public import ThesisLean.Formal_gen003c01_eea71821
-public import ThesisLean.Exec
-public import ThesisLean.ExecFlip
-public import ThesisLean.BridgeAssembly
+public import McsLean.ChallengeDefs
+public import McsLean.Formal_gen001c01_3939115c
+public import McsLean.Formal_gen003c01_eea71821
+public import McsLean.Exec
+public import McsLean.ExecFlip
+public import McsLean.BridgeAssembly
 
 set_option backward.proofsInPublic true
 @[expose] public section
@@ -15,7 +15,7 @@ set_option backward.proofsInPublic true
 # SolutionBridge: transport from the `Challenge` definitions to the project
 development
 
-`ThesisLean.ChallengeDefs` holds the definitions `Challenge.lean` states its
+`McsLean.ChallengeDefs` holds the definitions `Challenge.lean` states its
 theorems about.  The proofs live in the `DynamicMCS` development, whose
 definitions have identical bodies but are distinct constants.  This file
 connects the two families with `_eq` / `_toDyn` lemmas.

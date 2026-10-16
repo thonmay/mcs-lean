@@ -1,10 +1,10 @@
 module
 
 public import Mathlib
-public import ThesisLean.Exec
-public import ThesisLean.BridgeSteps
-public import ThesisLean.CardBridge
-public import ThesisLean.Formal_gen001c01_3939115c
+public import McsLean.Exec
+public import McsLean.BridgeSteps
+public import McsLean.CardBridge
+public import McsLean.Formal_gen001c01_3939115c
 
 set_option backward.proofsInPublic true
 @[expose] public section

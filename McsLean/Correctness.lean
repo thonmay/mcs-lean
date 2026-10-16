@@ -1,7 +1,7 @@
 module
 
 public import Mathlib
-public import ThesisLean.SolutionBridge
+public import McsLean.SolutionBridge
 
 set_option backward.proofsInPublic true
 @[expose] public section
