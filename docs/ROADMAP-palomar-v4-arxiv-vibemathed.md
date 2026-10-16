@@ -212,7 +212,7 @@ The verdict's G={01,02}, F={03,13} is not a counterexample (`0,2,1,3,4` is valid
 - **Gate C (supervisor audit).** Send audit package C (§3a). Submit only after written sign-off.
 
 ### P6: Dissemination
-- Update the ELTE write-up to the new theorem set (tie-break split, locality, stability) so the thesis, Palomar and arXiv agree.
+- Update the ELTE write-up to the new theorem set (tie-break split, locality, stability) so the write-up, Palomar and arXiv agree.
 - After P3–P5 are live and audited: LinkedIn/X thread, ResearchGate/Academia mirror of the arXiv PDF, Lean Zulip post. Wording copied from the abstract.
 
 ### 3a. Supervisor audit packages (our own validation first, then send)
