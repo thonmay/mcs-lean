@@ -12,8 +12,10 @@ set_option backward.proofsInPublic true
 `MCS(G)` denotes the set of MCS orderings of `G` under arbitrary tie-breaking
 (`IsMCSOrderingAny`).
 
-* `exists_common_ordering`: if along every chosen set each vertex's count in
-  `G'` is its count in `G` plus `0` or `1`, then `MCS(G) ∩ MCS(G') ≠ ∅`.
+* `exists_common_ordering_prefix`: if along every proper common MCS prefix each
+  unchosen vertex's count in `G'` is its count in `G` plus `0` or `1`, then
+  `MCS(G) ∩ MCS(G') ≠ ∅`. `exists_common_ordering` is the every-subset special
+  case, which is equivalent to `G'` being `G` plus a matching.
 * Hence inserting a matching, deleting a matching, or flipping a single edge
   always leaves a common MCS ordering.
 * The bound is sharp in two directions: flipping a matching whose edges are
@@ -68,9 +70,11 @@ lemma neigh_le_add_one {G F G' : UGraph n} (hadd : AddsEdges G F G') (hF : IsMat
   have h2 := Finset.card_union_le (S.filter (fun y => G.adj x y)) (S.filter (fun y => F.adj x y))
   omega
 
-/-- Some unchosen vertex is an MCS step in both graphs. -/
+/-- Some unchosen vertex is an MCS step in both graphs. Only the counts of
+unchosen vertices matter, so the bounds are required only for `x ∉ S`. -/
 theorem exists_common_pick (G G' : UGraph n) (S : Finset (Vert n))
-    (hlo : ∀ x, G.neigh S x ≤ G'.neigh S x) (hhi : ∀ x, G'.neigh S x ≤ G.neigh S x + 1)
+    (hlo : ∀ x, x ∉ S → G.neigh S x ≤ G'.neigh S x)
+    (hhi : ∀ x, x ∉ S → G'.neigh S x ≤ G.neigh S x + 1)
     (hS : S ≠ (Finset.univ : Finset (Vert n))) :
     ∃ w, IsMCSNextAny G S w ∧ IsMCSNextAny G' S w := by
   have hU : ((Finset.univ : Finset (Vert n)) \ S).Nonempty :=
@@ -80,21 +84,22 @@ theorem exists_common_pick (G G' : UGraph n) (S : Finset (Vert n))
   by_cases h : G'.neigh S w' ≤ G'.neigh S w
   · exact ⟨w, ⟨hwU, hw⟩, ⟨hwU, fun x hx => (hw' x hx).trans h⟩⟩
   · refine ⟨w', ⟨hw'U, fun x hx => ?_⟩, ⟨hw'U, hw'⟩⟩
-    have h1 := hlo w
-    have h2 := hhi w'
+    have h1 := hlo w (Finset.mem_sdiff.1 hwU).2
+    have h2 := hhi w' (Finset.mem_sdiff.1 hw'U).2
     have h3 := hw x hx
     have h4 := hw w' hw'U
     omega
 
-/-- If the counts track to within one along every *proper common MCS prefix* —
-the sets the constructive proof actually visits — the two graphs share an MCS
-ordering. This is strictly more general than `exists_common_ordering`: the
-hypothesis is required only on reachable prefixes, not on every subset. -/
+/-- If, along every *proper common MCS prefix* `P` (the sets the constructive
+proof actually visits), the count of every vertex not in `P` in `G'` is its count
+in `G` plus `0` or `1`, the two graphs share an MCS ordering. This is strictly
+more general than `exists_common_ordering`: the bound is required only on
+reachable prefixes and only for unchosen vertices, not on every subset. -/
 theorem exists_common_ordering_prefix (G G' : UGraph n)
     (hlo : ∀ P, IsCommonPrefix G G' P → P.length < n →
-             ∀ x, G.neigh P.toFinset x ≤ G'.neigh P.toFinset x)
+             ∀ x, x ∉ P → G.neigh P.toFinset x ≤ G'.neigh P.toFinset x)
     (hhi : ∀ P, IsCommonPrefix G G' P → P.length < n →
-             ∀ x, G'.neigh P.toFinset x ≤ G.neigh P.toFinset x + 1) :
+             ∀ x, x ∉ P → G'.neigh P.toFinset x ≤ G.neigh P.toFinset x + 1) :
     ∃ ord, IsMCSOrderingAny G ord ∧ IsMCSOrderingAny G' ord := by
   suffices h : ∀ k ≤ n, ∃ P : List (Vert n), P.length = k ∧ P.Nodup ∧
       ∀ i (hi : i < P.length), IsMCSNextAny G (P.take i).toFinset (P.get ⟨i, hi⟩) ∧
@@ -115,7 +120,9 @@ theorem exists_common_ordering_prefix (G G' : UGraph n)
       have hcommon : IsCommonPrefix G G' P := ⟨hnd, hP⟩
       have hlt : P.length < n := by omega
       obtain ⟨w, hwG, hwG'⟩ :=
-        exists_common_pick G G' P.toFinset (hlo P hcommon hlt) (hhi P hcommon hlt) hS
+        exists_common_pick G G' P.toFinset
+          (fun x hx => hlo P hcommon hlt x (fun hm => hx (List.mem_toFinset.2 hm)))
+          (fun x hx => hhi P hcommon hlt x (fun hm => hx (List.mem_toFinset.2 hm))) hS
       have hwP : w ∉ P := fun hm => (Finset.mem_sdiff.1 hwG.1).2 (List.mem_toFinset.2 hm)
       refine ⟨P ++ [w], by simp [hlen], ?_,
         steps_append (Q := fun S x => IsMCSNextAny G S x ∧ IsMCSNextAny G' S x) P w hP ⟨hwG, hwG'⟩⟩
@@ -128,30 +135,30 @@ theorem exists_common_ordering_prefix (G G' : UGraph n)
       subst hxy
       exact hwP hx
 
-/-- If counts in `G'` exceed counts in `G` by `0` or `1` along every chosen
-set, some ordering is an MCS ordering of both graphs. This is the
-`exists_common_ordering_prefix` bound required on *every* subset, hence in
-particular on every common prefix; it is the special case of the prefix version
-in which the stronger, all-subsets hypothesis holds. -/
+/-- If counts in `G'` exceed counts in `G` by `0` or `1` for every vertex and
+every subset `S`, some ordering is an MCS ordering of both graphs. This
+every-subset hypothesis is equivalent to `G'` being `G` plus a matching; it is
+the special case of `exists_common_ordering_prefix` in which the bound holds
+everywhere, not only on common prefixes. -/
 theorem exists_common_ordering (G G' : UGraph n)
     (hlo : ∀ S x, G.neigh S x ≤ G'.neigh S x) (hhi : ∀ S x, G'.neigh S x ≤ G.neigh S x + 1) :
     ∃ ord, IsMCSOrderingAny G ord ∧ IsMCSOrderingAny G' ord :=
   exists_common_ordering_prefix G G'
-    (fun _ _ _ x => hlo _ x) (fun _ _ _ x => hhi _ x)
+    (fun _ _ _ x _ => hlo _ x) (fun _ _ _ x _ => hhi _ x)
 
 /-- Online form of the common-ordering theorem: any common MCS prefix — a
 duplicate-free list `P` whose every step is a legal MCS step in *both* graphs —
 extends to a full common MCS ordering of both graphs.  The count bounds are
-required only along proper common prefixes, exactly as in
-`exists_common_ordering_prefix`.  This is the constructive content of that
-theorem: a maintainer that, at each step, picks any vertex that is maximum in
-both graphs can extend its prefix forever, with no lookahead and no
+required only along proper common prefixes and only for unchosen vertices,
+exactly as in `exists_common_ordering_prefix`.  This is the constructive content
+of that theorem: a maintainer that, at each step, picks any vertex that is
+maximum in both graphs can extend its prefix forever, with no lookahead and no
 backtracking. -/
 theorem common_order_extends_prefix (G G' : UGraph n)
     (hlo : ∀ P, IsCommonPrefix G G' P → P.length < n →
-             ∀ x, G.neigh P.toFinset x ≤ G'.neigh P.toFinset x)
+             ∀ x, x ∉ P → G.neigh P.toFinset x ≤ G'.neigh P.toFinset x)
     (hhi : ∀ P, IsCommonPrefix G G' P → P.length < n →
-             ∀ x, G'.neigh P.toFinset x ≤ G.neigh P.toFinset x + 1)
+             ∀ x, x ∉ P → G'.neigh P.toFinset x ≤ G.neigh P.toFinset x + 1)
     (P : List (Vert n)) (hnd : P.Nodup)
     (hsteps : ∀ i (hi : i < P.length),
       IsMCSNextAny G (P.take i).toFinset (P.get ⟨i, hi⟩) ∧
@@ -181,8 +188,9 @@ theorem common_order_extends_prefix (G G' : UGraph n)
         rw [List.toFinset_card_of_nodup hnd] at hc
         omega
       obtain ⟨w, hwG, hwG'⟩ :=
-        exists_common_pick G G' P.toFinset (hlo P ⟨hnd, hsteps⟩ hlt)
-          (hhi P ⟨hnd, hsteps⟩ hlt) hne
+        exists_common_pick G G' P.toFinset
+          (fun x hx => hlo P ⟨hnd, hsteps⟩ hlt x (fun hm => hx (List.mem_toFinset.2 hm)))
+          (fun x hx => hhi P ⟨hnd, hsteps⟩ hlt x (fun hm => hx (List.mem_toFinset.2 hm))) hne
       have hwP : w ∉ P :=
         fun hmem => (Finset.mem_sdiff.1 hwG.1).2 (List.mem_toFinset.2 hmem)
       have hnd' : (P ++ [w]).Nodup := by

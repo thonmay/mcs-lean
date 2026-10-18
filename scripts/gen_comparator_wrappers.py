@@ -103,18 +103,18 @@ THEOREMS = [
     ("exists_common_ordering_prefix", """∀ {n : ℕ} (G G' : UGraph n),
       (∀ (P : List (Vert n)),
           IsCommonPrefix G G' P → P.length < n →
-            ∀ (x : Vert n), G.neigh P.toFinset x ≤ G'.neigh P.toFinset x) →
+            ∀ (x : Vert n), x ∉ P → G.neigh P.toFinset x ≤ G'.neigh P.toFinset x) →
         (∀ (P : List (Vert n)),
             IsCommonPrefix G G' P → P.length < n →
-              ∀ (x : Vert n), G'.neigh P.toFinset x ≤ G.neigh P.toFinset x + 1) →
+              ∀ (x : Vert n), x ∉ P → G'.neigh P.toFinset x ≤ G.neigh P.toFinset x + 1) →
           ∃ ord, G.IsMCSOrderingAny ord ∧ G'.IsMCSOrderingAny ord"""),
     ("common_order_extends_prefix", """∀ {n : ℕ} (G G' : UGraph n),
       (∀ (P : List (Vert n)),
           IsCommonPrefix G G' P → P.length < n →
-            ∀ (x : Vert n), G.neigh P.toFinset x ≤ G'.neigh P.toFinset x) →
+            ∀ (x : Vert n), x ∉ P → G.neigh P.toFinset x ≤ G'.neigh P.toFinset x) →
         (∀ (P : List (Vert n)),
             IsCommonPrefix G G' P → P.length < n →
-              ∀ (x : Vert n), G'.neigh P.toFinset x ≤ G.neigh P.toFinset x + 1) →
+              ∀ (x : Vert n), x ∉ P → G'.neigh P.toFinset x ≤ G.neigh P.toFinset x + 1) →
           ∀ (P : List (Vert n)), P.Nodup →
             (∀ (i : ℕ) (hi : i < P.length),
               G.IsMCSNextAny (P.take i).toFinset (P.get ⟨i, hi⟩) ∧
@@ -160,9 +160,9 @@ DOCS = {
     "exec_delete_cost_of_break": "Cost: a deletion that fires costs one check plus at most n - laterPos regreedy steps.",
     "exec_insert_update_c_fst": "Cost link: the counted insertion update returns the same ordering as the plain executable insertion update.",
     "exec_delete_update_c_fst": "Cost link: the counted deletion update returns the same ordering as the plain executable deletion update.",
-    "exists_common_ordering": "Stability: if G' neighbour counts exceed G's by at most one along every chosen set, the two graphs share an MCS ordering.",
-    "exists_common_ordering_prefix": "Stability: if G' neighbour counts exceed G's by at most one along every proper common MCS prefix, the two graphs share an MCS ordering (strictly more general than the every-subset version).",
-    "common_order_extends_prefix": "Online stability: any common MCS prefix extends to a full common MCS ordering of both graphs; a maintainer picking a common-maximum vertex at each step never needs to backtrack.",
+    "exists_common_ordering": "Stability: if G' neighbour counts exceed G's by at most one for every vertex and every subset (equivalently, G' is G plus a matching), the two graphs share an MCS ordering.",
+    "exists_common_ordering_prefix": "Stability: if, along every proper common MCS prefix, each unchosen vertex's count in G' exceeds its count in G by at most one, the two graphs share an MCS ordering (strictly more general than the every-subset version).",
+    "common_order_extends_prefix": "Online stability: under the prefix hypothesis (unchosen vertices only), any common MCS prefix extends to a full common MCS ordering of both graphs; a maintainer picking a common-maximum vertex at each step never needs to backtrack.",
     "insert_matching_common_order": "Stability: inserting a matching leaves a common MCS ordering.",
     "delete_matching_common_order": "Stability: deleting a matching leaves a common MCS ordering.",
     "flip_common_order": "Stability: flipping a single edge leaves a common MCS ordering.",

@@ -20,10 +20,11 @@ project:
     legality checks and pick steps along the real executable control flow): at
     most n units for an insertion and n + 1 for a deletion, so the worst case
     matches static recomputation. A stability theorem is also proved: if the
-    neighbour count of every vertex in one graph exceeds that in the other by at
-    most one along every *proper common MCS prefix* (the sets the constructive
-    proof actually visits -- a hypothesis strictly weaker than the every-subset
-    bound), the two graphs admit a common MCS ordering; in particular inserting
+    neighbour count of every unchosen vertex in one graph exceeds that in the
+    other by at most one along every *proper common MCS prefix* (the sets the
+    constructive proof actually visits -- a hypothesis strictly weaker than the
+    every-subset bound, which is equivalent to adding a matching), the two
+    graphs admit a common MCS ordering; in particular inserting
     or deleting a matching, or flipping a single edge, always preserves a
     common MCS ordering. This strengthening (exists_common_ordering_prefix)
     makes the matching result a genuine corollary; the every-subset version
@@ -162,8 +163,9 @@ status:
     graph by setEdge_preserves_symm / setEdge_preserves_loopless and
     mcsOrder_eq_greedySuffix, with exec_insert_recompute_valid / exec_delete_recompute_valid. A
     stability-boundary result is proved: exists_common_ordering_prefix (the
-    neighbour counts differ by at most one along every proper common MCS prefix
-    implies a common MCS ordering -- strictly more general than the every-subset
+    neighbour counts of unchosen vertices differ by at most one along every
+    proper common MCS prefix implies a common MCS ordering -- strictly more
+    general than the every-subset
     exists_common_ordering, which is retained as a special case), its
     constructive online form common_order_extends_prefix (under the same
     prefix-only bounds, any common MCS prefix extends to a full common
@@ -393,6 +395,16 @@ alignment:
       module: "Solution"
       status: "proved"
       note: "Inside the insertion window, the old choice breaks exactly when the later endpoint now beats it."
+    - source: "Locality sharpening: on an insertion the old pick at the later endpoint's own position never breaks."
+      lean: "Challenge.no_break_at_laterPos"
+      module: "Solution"
+      status: "proved"
+      note: "At step laterPos the old pick is the later endpoint itself; its count rises by one and no other unchosen count changes, so it stays the strict canonical maximum. The probe window is therefore the open interval (earlierPos, laterPos)."
+    - source: "Locality sharpening: strictly inside the open window, the break criterion is decidable from the old-graph counts alone."
+      lean: "Challenge.insert_break_iff_old"
+      module: "Solution"
+      status: "proved"
+      note: "With c the later endpoint's old count, M the old maximum and w the old pick, the step breaks iff c = M, or c = M - 1 and the later endpoint is smaller than w."
     - source: "The insertion update is the identity exactly when the order is still canonical for the new graph."
       lean: "Challenge.insert_update_eq_self_iff"
       module: "Solution"
@@ -453,11 +465,16 @@ alignment:
       module: "Solution"
       status: "proved"
       note: "Links the unit-cost bound to the real executable update: the first projection of the counted update equals the plain update."
-    - source: "Stability: if G' neighbour counts exceed G's by at most one along every chosen set, the two graphs share an MCS ordering."
+    - source: "Stability: if G' neighbour counts exceed G's by at most one for every vertex and every subset, the two graphs share an MCS ordering."
       lean: "Challenge.exists_common_ordering"
       module: "Solution"
       status: "proved"
-      note: "Stability: if G' neighbour counts exceed G's by at most one along every chosen set, the two graphs share an MCS ordering."
+      note: "The every-subset hypothesis is equivalent to G' being G plus a matching (take S a singleton, then S the G'-neighbourhood of x). Retained as the special case of exists_common_ordering_prefix in which the bound holds everywhere."
+    - source: "Stability: if, along every proper common MCS prefix, each unchosen vertex's count in G' exceeds its count in G by at most one, the two graphs share an MCS ordering."
+      lean: "Challenge.exists_common_ordering_prefix"
+      module: "Solution"
+      status: "proved"
+      note: "The bound is required only on the sets the constructive proof visits (proper common MCS prefixes) and only for vertices not yet chosen. Strictly more general than the matching case: it already holds for inserting a P3 into the empty graph on three vertices."
     - source: "Online stability: any common MCS prefix extends to a full common MCS ordering of both graphs."
       lean: "Challenge.common_order_extends_prefix"
       module: "Solution"
@@ -493,6 +510,11 @@ alignment:
       module: "Solution"
       status: "proved"
       note: "Stability obstruction: a mixed matching update (one insert, one delete) can destroy every common MCS ordering."
+    - source: "Stability obstruction: inserting a 2P3 (two disjoint length-2 paths) can destroy every common MCS ordering."
+      lean: "Challenge.two_p3_no_common_order"
+      module: "Solution"
+      status: "proved"
+      note: "Certified by kernel decide on an eight-vertex host. Unlike the triangle (n = 5) and P4 (n = 6) obstructions, 2P3 needs n = 8: every host on n <= 7 keeps a common ordering."
 
 acknowledgements: >-
   Built on mathlib v4.35.0-rc2 and Lean 4.35.0-rc2. The verification pipeline

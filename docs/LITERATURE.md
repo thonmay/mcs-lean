@@ -87,8 +87,8 @@ paper; the correct authors are Banerjee, Raman and Satti.
 ## 3. Stability-boundary result (NOT FOUND)
 
 This is the novelty lever for the Palomar submission. The common-ordering
-theorem says: if, along every proper common MCS prefix, each vertex's neighbour
-count in `G'` is at least its count in `G` and at most one more, then `G` and
+theorem says: if, along every proper common MCS prefix, each unchosen vertex's
+neighbour count in `G'` is at least its count in `G` and at most one more, then `G` and
 `G'` share an MCS ordering under arbitrary tie-breaking. It comes with the
 matching and single-flip corollaries and with certified counterexamples that
 delimit the stability boundary.

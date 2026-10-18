@@ -53,12 +53,13 @@ All results below are proved in Lean for every graph size `n`, except the
 probe bound marked *paper-level*.
 
 - **Stability theorem.** If, along every **proper common MCS prefix**, the
-  neighbour counts in `G'` exceed those in `G` by zero or one, the two graphs
-  share an MCS ordering (`exists_common_ordering_prefix`). This is strictly
-  weaker than requiring the bound on every subset; the every-subset version
-  `exists_common_ordering` is retained as a special case. In particular,
-  inserting or deleting a *matching*, or flipping a single edge, always
-  preserves a common MCS ordering.
+  count of each vertex not yet chosen in `G'` exceeds its count in `G` by zero
+  or one, the two graphs share an MCS ordering
+  (`exists_common_ordering_prefix`). Requiring the bound on every subset instead
+  (`exists_common_ordering`, kept as a special case) is equivalent to `G'`
+  being `G` plus a matching; the prefix version is strictly more general. In
+  particular, inserting or deleting a *matching*, or flipping a single edge,
+  always preserves a common MCS ordering.
 - **Online form.** Under the same prefix-only hypothesis, any common MCS prefix
   extends to a full common ordering (`common_order_extends_prefix`): a
   maintainer that picks a common-maximum vertex at each step never needs to

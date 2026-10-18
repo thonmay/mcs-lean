@@ -667,32 +667,32 @@ theorem exec_delete_update_c_fst : ∀ {n : ℕ} (a : Adj n) (o : List ℕ) (u v
       (execDeleteUpdateC a o u v).1 = execDeleteUpdate a o u v := by
   sorry
 
-/-- Stability: if G' neighbour counts exceed G's by at most one along every chosen set, the two graphs share an MCS ordering. -/
+/-- Stability: if G' neighbour counts exceed G's by at most one for every vertex and every subset (equivalently, G' is G plus a matching), the two graphs share an MCS ordering. -/
 theorem exists_common_ordering : ∀ {n : ℕ} (G G' : UGraph n),
       (∀ (S : Finset (Vert n)) (x : Vert n), G.neigh S x ≤ G'.neigh S x) →
         (∀ (S : Finset (Vert n)) (x : Vert n), G'.neigh S x ≤ G.neigh S x + 1) →
           ∃ ord, G.IsMCSOrderingAny ord ∧ G'.IsMCSOrderingAny ord := by
   sorry
 
-/-- Stability: if G' neighbour counts exceed G's by at most one along every proper common MCS prefix, the two graphs share an MCS ordering (strictly more general than the every-subset version). -/
+/-- Stability: if, along every proper common MCS prefix, each unchosen vertex's count in G' exceeds its count in G by at most one, the two graphs share an MCS ordering (strictly more general than the every-subset version). -/
 theorem exists_common_ordering_prefix : ∀ {n : ℕ} (G G' : UGraph n),
       (∀ (P : List (Vert n)),
           IsCommonPrefix G G' P → P.length < n →
-            ∀ (x : Vert n), G.neigh P.toFinset x ≤ G'.neigh P.toFinset x) →
+            ∀ (x : Vert n), x ∉ P → G.neigh P.toFinset x ≤ G'.neigh P.toFinset x) →
         (∀ (P : List (Vert n)),
             IsCommonPrefix G G' P → P.length < n →
-              ∀ (x : Vert n), G'.neigh P.toFinset x ≤ G.neigh P.toFinset x + 1) →
+              ∀ (x : Vert n), x ∉ P → G'.neigh P.toFinset x ≤ G.neigh P.toFinset x + 1) →
           ∃ ord, G.IsMCSOrderingAny ord ∧ G'.IsMCSOrderingAny ord := by
   sorry
 
-/-- Online stability: any common MCS prefix extends to a full common MCS ordering of both graphs; a maintainer picking a common-maximum vertex at each step never needs to backtrack. -/
+/-- Online stability: under the prefix hypothesis (unchosen vertices only), any common MCS prefix extends to a full common MCS ordering of both graphs; a maintainer picking a common-maximum vertex at each step never needs to backtrack. -/
 theorem common_order_extends_prefix : ∀ {n : ℕ} (G G' : UGraph n),
       (∀ (P : List (Vert n)),
           IsCommonPrefix G G' P → P.length < n →
-            ∀ (x : Vert n), G.neigh P.toFinset x ≤ G'.neigh P.toFinset x) →
+            ∀ (x : Vert n), x ∉ P → G.neigh P.toFinset x ≤ G'.neigh P.toFinset x) →
         (∀ (P : List (Vert n)),
             IsCommonPrefix G G' P → P.length < n →
-              ∀ (x : Vert n), G'.neigh P.toFinset x ≤ G.neigh P.toFinset x + 1) →
+              ∀ (x : Vert n), x ∉ P → G'.neigh P.toFinset x ≤ G.neigh P.toFinset x + 1) →
           ∀ (P : List (Vert n)), P.Nodup →
             (∀ (i : ℕ) (hi : i < P.length),
               G.IsMCSNextAny (P.take i).toFinset (P.get ⟨i, hi⟩) ∧
