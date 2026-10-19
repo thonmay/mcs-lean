@@ -166,6 +166,8 @@ scripts/
   stab.c                      Independent C brute-force stability checker (referee-written)
   mcs_highn_crosscheck.py     High-n cross-check of the adopted candidate vs from-scratch MCS
   incomparability_witness.py  MCS/LexBFS ordering-family incomparability (204/204/40)
+  prefix_hypothesis_count.py  Exhaustive count of updates satisfying the prefix stability hypothesis
+  probe_check.py              Random-graph check of the insertion probe and the deletion break test
   candidates/gen003_c02.py    The adopted dynamic-MCS candidate the cross-check runs
 docs/
   LITERATURE.md               Literature and provenance notes
@@ -213,6 +215,14 @@ candidate cross-check are reproduced by:
 ```bash
 python3 scripts/incomparability_witness.py                 # asserts 204/204/40
 python3 scripts/mcs_highn_crosscheck.py --nmax 200         # candidate vs from-scratch MCS
+```
+
+The counts quoted in the paper for the prefix stability hypothesis and the
+probe section are reproduced by:
+
+```bash
+python3 scripts/prefix_hypothesis_count.py 5   # non-matching updates covered: 48/100 (n=4), 1020/5315 (n=5)
+python3 scripts/probe_check.py                 # probe vs recomputation; deletion runner-up test
 ```
 
 ## Provenance
