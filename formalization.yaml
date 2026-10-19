@@ -183,9 +183,10 @@ status:
     position, so the probe window is the open interval (earlierPos, laterPos))
     and insert_break_iff_old (strictly inside the open window the break criterion
     is decidable from the old-graph counts). The step-function structure behind
-    sublinear probing is machine-checked (neigh_take_image_card_le,
-    neigh_take_sub_eq_count). The sharpest cost statements are the no-break
-    cases:
+    the paper's sublinear probe is machine-checked (neigh_take_image_card_le,
+    neigh_take_sub_eq_count); the O((deg v + 1) log n) probe bound itself is a
+    paper-level argument, not a Lean theorem. The most specific cost statements
+    are the no-break cases:
     exec_delete_cost_of_no_break (a no-break deletion costs exactly 1 unit) and
     exec_insert_cost_of_no_break (a no-break insertion costs at most the window
     size). All headline theorems in
