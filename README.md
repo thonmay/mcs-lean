@@ -163,7 +163,7 @@ scripts/
   check_axioms.sh             Axiom audit for all comparator theorems
   gen_comparator_wrappers.py  Single-source generator for comparator blocks
   mcs_stability.py            Exhaustive stability harness (cross-check for counterexamples)
-  stab.c                      Independent C brute-force stability checker (referee-written)
+  stab.c                      Independent C brute-force stability checker (internal review)
   mcs_highn_crosscheck.py     High-n cross-check of the adopted candidate vs from-scratch MCS
   incomparability_witness.py  MCS/LexBFS ordering-family incomparability (204/204/40)
   prefix_hypothesis_count.py  Exhaustive count of updates satisfying the prefix stability hypothesis
