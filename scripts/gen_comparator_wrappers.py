@@ -169,7 +169,7 @@ DOCS = {
     "triangle_no_common_order": "Stability obstruction: inserting a triangle can destroy every common MCS ordering.",
     "p4_no_common_order": "Stability obstruction: inserting a P4 path can destroy every common MCS ordering.",
     "mixed_matching_no_common_order": "Stability obstruction: a mixed matching update (one insert, one delete) can destroy every common MCS ordering.",
-    "two_p3_no_common_order": "Stability obstruction: inserting a 2P3 (two disjoint length-2 paths, four edges) can destroy every common MCS ordering; unlike the triangle and P4 this needs n = 8.",
+    "two_p3_no_common_order": "Stability obstruction: inserting a 2P3 (two disjoint length-2 paths, four edges) into this explicit eight-vertex host destroys every common MCS ordering. Only this witness is proved; that no smaller host works is an exhaustive computer search, not a Lean theorem.",
 }
 
 

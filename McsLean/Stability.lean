@@ -371,8 +371,11 @@ theorem no_common_order_of_search (E₁ E₂ : List (ℕ × ℕ))
 
 Each theorem asserts that two specific graphs (given as edge lists) have no
 common MCS ordering, proved by applying `no_common_order_of_search` and
-discharging its search hypothesis by kernel `decide`. The witnesses are the
-smallest found by the exhaustive harness in `scripts/mcs_stability.py`. -/
+discharging its search hypothesis by kernel `decide`. Each theorem proves one
+explicit witness. The witnesses were found by the exhaustive harnesses in
+`scripts/mcs_stability.py` and `scripts/stab.c`, which also report that no
+smaller host works; that minimality is a computer-search result, not a Lean
+theorem. -/
 
 /-- Inserting the triangle on `{2,3,4}` into `G` leaves no common MCS ordering. -/
 theorem triangle_no_common_order :
@@ -400,10 +403,10 @@ theorem mixed_matching_no_common_order :
 
 /-- Inserting the matching-like one-sided update `2P3` (the four edges
 `01, 02, 34, 35`, forming two disjoint length-2 paths) into the five-edge graph
-on eight vertices leaves no common MCS ordering. Unlike the triangle and the
-`P4`, this obstruction needs `n = 8` (it admits a common ordering for all hosts
-on `n ≤ 7`); the witness is the sparsest found by the exhaustive sweep in
-`stab.c` (13,644 of the 2^24 hosts fail). -/
+on eight vertices leaves no common MCS ordering. Only this witness is proved
+here. The exhaustive sweep in `scripts/stab.c` finds no failing host for `2P3`
+on `n ≤ 7` and 13,644 failing hosts out of 2^24 on `n = 8`; that search result
+is not a Lean theorem. -/
 theorem two_p3_no_common_order :
     ¬ ∃ ord,
       IsMCSOrderingAny (ofEdges 8 [(1,5),(1,7),(2,4),(2,6),(4,5)]) ord ∧

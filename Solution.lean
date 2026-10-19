@@ -522,7 +522,7 @@ theorem mixed_matching_no_common_order : ¬ ∃ ord, IsMCSOrderingAny (ofEdges 4
       IsMCSOrderingAny (ofEdges 4 [(0,3),(1,2),(2,3)]) ord :=
   Proofs.mixed_matching_no_common_order
 
-/-- Stability obstruction: inserting a 2P3 (two disjoint length-2 paths, four edges) can destroy every common MCS ordering; unlike the triangle and P4 this needs n = 8. -/
+/-- Stability obstruction: inserting a 2P3 (two disjoint length-2 paths, four edges) into this explicit eight-vertex host destroys every common MCS ordering. Only this witness is proved; that no smaller host works is an exhaustive computer search, not a Lean theorem. -/
 theorem two_p3_no_common_order : ¬ ∃ ord, IsMCSOrderingAny (ofEdges 8 [(1,5),(1,7),(2,4),(2,6),(4,5)]) ord ∧
       IsMCSOrderingAny
         (ofEdges 8 ([(1,5),(1,7),(2,4),(2,6),(4,5)] ++ [(0,1),(0,2),(3,4),(3,5)])) ord :=

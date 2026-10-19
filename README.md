@@ -69,7 +69,10 @@ probe bound marked *paper-level*.
   (`n = 8`) shows the `+1` bound cannot be relaxed to `+2`. A *disjoint* mixed
   update (one insertion and one deletion, `n = 4`) shows the one-directional
   (insert-only or delete-only) condition is needed. Each instance destroys every
-  common ordering, certified by kernel `decide`. The triangle and the `P_4` show
+  common ordering, certified by kernel `decide`. Each theorem proves one
+  explicit witness; the sizes in parentheses are the smallest hosts found by
+  exhaustive computer search (`scripts/mcs_stability.py`, `scripts/stab.c`),
+  and that minimality is not a Lean theorem. The triangle and the `P_4` show
   the same inflation on structurally different insertions: one is a clique, the
   other is triangle-free. The hypothesis is sufficient but not necessary.
   Inserting a 2-edge path inflates one vertex by two, yet a common ordering

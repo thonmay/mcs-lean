@@ -521,7 +521,7 @@ alignment:
       lean: "Challenge.two_p3_no_common_order"
       module: "Solution"
       status: "proved"
-      note: "Certified by kernel decide on an eight-vertex host. Unlike the triangle (n = 5) and P4 (n = 6) obstructions, 2P3 needs n = 8: every host on n <= 7 keeps a common ordering."
+      note: "Certified by kernel decide on one explicit eight-vertex host. The theorem proves this witness only. That no host on n <= 7 vertices fails for 2P3 is the result of an exhaustive computer search (scripts/stab.c), not a Lean theorem."
 
 acknowledgements: >-
   Built on mathlib v4.35.0-rc2 and Lean 4.35.0-rc2. The verification pipeline
