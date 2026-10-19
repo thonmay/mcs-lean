@@ -12,8 +12,8 @@ along its real control flow.
 **Accompanying preprint:** *How rigid is maximum cardinality search? Stability
 and locality of MCS orderings under edge updates, verified in Lean* (in
 preparation). The preprint pins this repository to the annotated tag
-[`mcs-arxiv-v8`](https://github.com/thonmay/mcs-lean/releases/tag/mcs-arxiv-v8)
-(commit `c5160a4`).
+[`mcs-arxiv-v9`](https://github.com/thonmay/mcs-lean/releases/tag/mcs-arxiv-v9)
+(commit `ab521f2`).
 
 **Registered formalization:** Palomar Registry entry
 [`PALOMAR-2026-10-04-000009`](https://palomar-registry.org/entry.html?id=PALOMAR-2026-10-04-000009&version=2),
