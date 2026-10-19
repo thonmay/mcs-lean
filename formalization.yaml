@@ -199,7 +199,7 @@ automation:
   methods:
     - method: "agent"
       models: ["deepseek-ai/DeepSeek-V4-Flash-0731"]
-      framework: "enlcode agent harness over Lean 4 / lean4-repl / lean-lsp (thinking mode on)"
+      framework: "enlcode agent harness over Lean 4 / lean4-repl / lean-lsp (thinking mode on, default effort)"
       tool_setup: >-
         Original development phase (the v1-v3 bundle): interactive proving
         against mathlib on a remote 96-core host (lake build + leanchecker),
@@ -217,7 +217,7 @@ automation:
         and per-file lake build checks.
     - method: "agent"
       models: ["Claude Opus 5.5"]
-      framework: "CLI coding-agent harness over Lean 4 / lake build via CI (extended thinking on)"
+      framework: "CLI coding-agent harness over Lean 4 / lake build via CI (high thinking mode)"
       tool_setup: >-
         v4 repair planning, first-draft development and review, on the author's
         laptop with CI builds on GitHub Actions. Planning: the resubmission
@@ -244,7 +244,7 @@ automation:
         the definitions before proofs; builds verified through CI logs.
     - method: "agent"
       models: ["Qwen/Qwen3.8-27B-FP8"]
-      framework: "enlcode agent harness over Lean 4 / lean4-repl / lake build (thinking mode on)"
+      framework: "enlcode agent harness over Lean 4 / lean4-repl / lake build (thinking mode on, default effort)"
       tool_setup: >-
         Repair and wiring phase: fixed the executable-update refinement and
         unit-cost proof bodies, added the certified stability counterexamples,
