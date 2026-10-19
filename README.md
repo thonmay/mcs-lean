@@ -49,8 +49,10 @@ inserted or deleted?
 
 ## Results
 
-All results below are proved in Lean for every graph size `n`, except the
-probe bound marked *paper-level*.
+The named theorems below are proved in Lean for every graph size `n`. Three
+kinds of statement are not: the probe bound marked *paper-level*, the minimal
+host sizes of the obstructions, and the computer-search observations marked
+*tested*, which hold only for the graph sizes stated.
 
 - **Stability theorem.** If, along every **proper common MCS prefix**, the
   count of each vertex not yet chosen in `G'` exceeds its count in `G` by zero
@@ -74,10 +76,12 @@ probe bound marked *paper-level*.
   exhaustive computer search (`scripts/mcs_stability.py`, `scripts/stab.c`),
   and that minimality is not a Lean theorem. The triangle and the `P_4` show
   the same inflation on structurally different insertions: one is a clique, the
-  other is triangle-free. The hypothesis is sufficient but not necessary.
-  Inserting a 2-edge path inflates one vertex by two, yet a common ordering
-  survives on every host graph (checked exhaustively up to `n = 6` with
-  `scripts/mcs_stability.py`).
+  other is triangle-free. The hypothesis is sufficient but not necessary: on
+  four vertices, inserting the 2-edge path `{01, 02}` into `G = {12}` inflates
+  vertex `0` by two along a common prefix, yet a common ordering exists.
+  *Tested:* inserting a 2-edge path left a common ordering on every host graph
+  checked, exhaustively up to `n = 8` (`scripts/stab.c`); whether this holds for
+  all `n` is open (part of the Star-Matching conjecture in the paper).
 - **Correctness.** The probe-then-repair update scans for the first step whose
   old choice is no longer a legal MCS pick and re-greedily rebuilds the suffix
   from there. Every order it produces is the canonical MCS ordering of the
@@ -108,9 +112,9 @@ probe bound marked *paper-level*.
   compares the update with recomputation *within the same model*. It says
   nothing about wall-clock parity with the linear-time static algorithm of
   Tarjan and Yannakakis.
-- **Sublinear first-break probe (paper-level).** The insertion probe is
-  answerable in `O((deg(v)+1) log n)` time, independent of the window length,
-  via per-value position lists and range-max structures. This bound is proved
+- **Sublinear first-break probe (paper-level).** The first break of an
+  insertion is located in `O((deg(v)+1) log n)` time, independent of the window
+  length, via per-value search trees over the per-step data. This bound is proved
   on paper, not in Lean; its combinatorial core (the count `c_v(j)` is a step
   function with at most `deg(v)+1` plateaus) is machine-checked
   (`neigh_take_image_card_le`, `neigh_take_sub_eq_count`). The worst-case full
