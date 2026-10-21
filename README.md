@@ -22,8 +22,12 @@ version 2, status `registered`, built from commit `c4c2c0f`
 [`PALOMAR-2026-10-04-000009-v2.json`](https://data.palomar-registry.org/entries/PALOMAR-2026-10-04-000009-v2.json)).
 Review outcome `neutral` with no review warnings; trust level `high`. Version 1
 was registered from the ancestor commit `a872fdd` (37 of the current 41
-comparator theorems). Registration is a preservation and indexing service, not
-a review endorsement.
+comparator theorems). Version 2 records the earlier form of
+`exists_common_ordering_prefix` and `common_order_extends_prefix` (count bounds
+for every vertex); the unchosen-only form stated in the preprint is checked by
+this repository's CI and `leanchecker`. A version-3 submission from `ab521f2`,
+which carries that form, is awaiting registration. Registration is a
+preservation and indexing service, not a review endorsement.
 
 ---
 
@@ -143,6 +147,9 @@ so the posed and proved types stay textually identical.
 
 All 41 theorems audit to only the three standard Lean axioms:
 `propext`, `Quot.sound`, `Classical.choice` (no `sorry`, no `native_decide`).
+The same audit covers six auxiliary lemmas the preprint cites by name:
+`neigh_take_succ`, `neigh_take_sub_eq_count`, `neigh_take_image_card_le`,
+`exists_common_pick`, `no_common_order_of_search`, `commonSearch_of_common`.
 `mcsOrder_eq_greedySuffix` and the two `*_recompute_valid` theorems certify
 recomputation rather than the update; they are kept for the executable bridge.
 
@@ -151,7 +158,7 @@ recomputation rather than the update; they are kept for the executable bridge.
 ```
 Challenge.lean            Posed statements (sorry bodies) + canonical definitions
 Solution.lean             Proved versions of every comparator theorem
-AxiomAudit.lean           #print axioms for each comparator theorem
+AxiomAudit.lean           #print axioms for each comparator theorem + cited lemmas
 McsLean/
   Basic.lean              Module header and shared imports
   ChallengeDefs.lean      Canonical definitions (byte-identical to Challenge.lean DEFS block)
@@ -167,7 +174,7 @@ McsLean/
 scripts/
   check_challenge_defs.sh     Verify Challenge.lean DEFS block matches ChallengeDefs.lean
   sync_challenge_defs.py      Copy the DEFS block from ChallengeDefs.lean into Challenge.lean
-  check_axioms.sh             Axiom audit for all comparator theorems
+  check_axioms.sh             Axiom audit for all comparator theorems + cited lemmas
   gen_comparator_wrappers.py  Single-source generator for comparator blocks
   mcs_stability.py            Exhaustive stability harness (cross-check for counterexamples)
   stab.c                      Independent C brute-force stability checker (internal review)

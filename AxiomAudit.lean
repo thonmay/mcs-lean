@@ -11,8 +11,10 @@ set_option backward.proofsInPublic true
 Prints the axioms each theorem listed in `comparator.json` depends on, as
 proved in `Solution.lean`.  Run with `lake env lean AxiomAudit.lean`;
 `scripts/check_axioms.sh` fails unless every line lists only `propext`,
-`Classical.choice` and `Quot.sound`, and unless the names below are exactly
-the comparator list.
+`Classical.choice` and `Quot.sound`, and unless the names in the first block
+are exactly the comparator list.  The second block audits the auxiliary
+lemmas the paper cites by name (the step-function facts behind the probe, the
+stability key step, and the pruned-search soundness lemmas).
 -/
 
 -- BEGIN AUDIT
@@ -58,3 +60,12 @@ the comparator list.
 #print axioms Challenge.mixed_matching_no_common_order
 #print axioms Challenge.two_p3_no_common_order
 -- END AUDIT
+
+-- BEGIN AUX AUDIT
+#print axioms Challenge.Proofs.neigh_take_succ
+#print axioms Challenge.Proofs.neigh_take_sub_eq_count
+#print axioms Challenge.Proofs.neigh_take_image_card_le
+#print axioms Challenge.Proofs.exists_common_pick
+#print axioms Challenge.Proofs.no_common_order_of_search
+#print axioms Challenge.Proofs.commonSearch_of_common
+-- END AUX AUDIT

@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Fail unless AxiomAudit.lean audits exactly the comparator.json theorems and
-# every one of them depends only on the permitted axioms.
+# every audited declaration (comparator theorems plus the auxiliary lemmas in
+# the AUX AUDIT block) depends only on the permitted axioms.
 set -euo pipefail
 
 root="$(cd "$(dirname "$0")/.." && pwd)"
@@ -19,7 +20,8 @@ output="$(lake env lean AxiomAudit.lean)"
 echo "$output"
 
 count="$(grep -c "depends on axioms\|does not depend on any axioms" <<<"$output" || true)"
-expected="$(wc -l <<<"$listed" | tr -d ' ')"
+aux="$(awk '/^-- BEGIN AUX AUDIT$/{on=1;next} /^-- END AUX AUDIT$/{on=0} on{print $3}' AxiomAudit.lean | grep -c . || true)"
+expected="$(( $(wc -l <<<"$listed" | tr -d ' ') + aux ))"
 if [[ "$count" != "$expected" ]]; then
   echo "error: expected $expected axiom reports, got $count" >&2
   exit 1
